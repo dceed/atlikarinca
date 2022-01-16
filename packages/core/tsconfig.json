@@ -1,0 +1,14 @@
+{
+  "extends": "@loadelayed/config/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "declaration": true,
+    "declarationDir": "./types",
+    "emitDeclarationOnly": true,
+    "typeRoots": ["node_modules/@types", "types"]
+  },
+  "exclude": ["vite.config.ts", "types"]
+}

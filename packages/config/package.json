@@ -1,0 +1,7 @@
+{
+  "name": "@loadelayed/config",
+  "version": "0.0.0",
+  "files": [
+    "tsconfig.json"
+  ]
+}

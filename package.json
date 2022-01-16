@@ -1,27 +1,4 @@
 {
-  "name": "loadelayed",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "^4.5.4",
-    "vite": "^2.7.12"
-  },
-  "author": "Asım Tahir <a.karakus@pa.ag>",
-  "maintainers": [
-    {
-      "email": "a.karakus@pa.ag",
-      "name": "Asım Tahir",
-      "url": "https://github.com/Asim-Tahir"
-    }
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=10",
-    "pnpm": ">=3"
-  }
+	"name": "loadelayed-monorepo",
+	"version": "0.0.0"
 }

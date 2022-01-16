@@ -1,0 +1,48 @@
+#loadelayed-spinner {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  box-sizing: border-box;
+  border-color: blueviolet;
+  border-style: solid;
+  border-radius: 9999px;
+  animation: spin 1s linear infinite;
+  border-bottom-color: transparent;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  &[data-loadelayed-spinner-size="3xs"] {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.25rem;
+  }
+
+  &[data-loadelayed-spinner-size="2xs"] {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-width: 0.375rem;
+  }
+
+  &[data-loadelayed-spinner-size="xs"] {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.5rem;
+  }
+
+  &[data-loadelayed-spinner-size="sm"] {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-width: 0.5rem;
+  }
+
+  &[data-loadelayed-spinner-size="base"],
+  &:not([data-loadelayed-spinner-size]) {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.5rem;
+  }
+}

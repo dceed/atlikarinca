@@ -1,0 +1,54 @@
+{
+  "name": "loadelayed",
+  "version": "0.0.0",
+  "files": [
+    "dist",
+    "types"
+  ],
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/loadelayed.es.js",
+      "import": "./dist/loadelayed.es.js",
+      "require": "./dist/loadelayed.umd.js"
+    },
+    "./lib": {
+      "default": "./lib/index.ts",
+      "import": "./lib/index.ts"
+    },
+    "./css/*": "./dist/css/*"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build@watch": "concurrently -n tsc,vite \"tsc -w\" \"vite build -w\"",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@loadelayed/config": "workspace:^0.0.0",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/node": "^17.0.8",
+    "autoprefixer": "^10.4.2",
+    "concurrently": "^7.0.0",
+    "postcss": "^8.4.5",
+    "postcss-nesting": "^10.1.2",
+    "typescript": "^4.5.4",
+    "vite": "^2.7.12"
+  },
+  "author": "Asım Tahir <a.karakus@pa.ag>",
+  "maintainers": [
+    {
+      "email": "a.karakus@pa.ag",
+      "name": "Asım Tahir",
+      "url": "https://github.com/Asim-Tahir"
+    }
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=10",
+    "pnpm": ">=3"
+  },
+  "dependencies": {
+    "@loadelayed/utils": "workspace:^0.0.0"
+  }
+}
