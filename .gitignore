@@ -1,7 +1,7 @@
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 
-# Created by https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,visualstudiocode
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,yarn
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,node,yarn
 
 ### Node ###
 # Logs
@@ -150,7 +150,6 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
-**/*.code-workspace
 
 # Local History for Visual Studio Code
 .history/
@@ -165,7 +164,24 @@ dist
 
 # Support for Project snippet scope
 
-# End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+# !.yarn/cache
+
+# and uncomment the following lines
+# .pnp.*
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,yarn
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
