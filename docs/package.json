@@ -1,0 +1,12 @@
+{
+  "name": "@loadelayed/docs",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vitepress dev",
+    "serve": "vitepress serve",
+    "build": "vitepress build"
+  },
+  "devDependencies": {
+    "vitepress": "^0.20.10"
+  }
+}
