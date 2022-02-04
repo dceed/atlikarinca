@@ -1,28 +1,62 @@
 {
   "name": "loadelayed",
   "version": "0.0.0",
+  "description": "Opiniated loader.",
+  "private": true,
+  "keywords": [
+    "loader",
+    "spinner",
+    "loading"
+  ],
+  "types": "types/index.d.ts",
+  "jsdelivr": "dist/loadelayed.es.min.js",
+  "unpkg": "dist/loadelayed.es.min.js",
+  "main": "dist/loadelayed.umd.min.js",
+  "module": "dist/loadelayed.es.min.js",
+  "exports": {
+    ".": {
+      "default": "./dist/loadelayed.es.min.js",
+      "import": "./dist/loadelayed.es.min.js",
+      "require": "./dist/loadelayed.umd.min.js"
+    },
+    "./css/*": "./dist/css/*"
+  },
   "files": [
     "dist",
     "types"
   ],
-  "types": "./types/index.d.ts",
-  "exports": {
-    ".": {
-      "default": "./dist/loadelayed.es.js",
-      "import": "./dist/loadelayed.es.js",
-      "require": "./dist/loadelayed.umd.js"
-    },
-    "./lib": {
-      "default": "./lib/index.ts",
-      "import": "./lib/index.ts"
-    },
-    "./css/*": "./dist/css/*"
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "build@watch": "concurrently -n tsc,vite \"tsc -w\" \"vite build -w\"",
     "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dceed/loadelayed.git"
+  },
+  "author": "Asım Tahir <a.karakus@pa.ag>",
+  "maintainers": [
+    {
+      "email": "a.karakus@pa.ag",
+      "name": "Asım Tahir",
+      "url": "https://github.com/Asim-Tahir"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dceed/loadelayed/discussions/categories/bug"
+  },
+  "engines": {
+    "node": ">=10",
+    "pnpm": ">=3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/dceed/loadelayed",
+  "dependencies": {
+    "@loadelayed/utils": "workspace:^0.0.0"
   },
   "devDependencies": {
     "@loadelayed/config": "workspace:^0.0.0",
@@ -34,21 +68,5 @@
     "postcss-nesting": "^10.1.2",
     "typescript": "^4.5.4",
     "vite": "^2.7.12"
-  },
-  "author": "Asım Tahir <a.karakus@pa.ag>",
-  "maintainers": [
-    {
-      "email": "a.karakus@pa.ag",
-      "name": "Asım Tahir",
-      "url": "https://github.com/Asim-Tahir"
-    }
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=10",
-    "pnpm": ">=3"
-  },
-  "dependencies": {
-    "@loadelayed/utils": "workspace:^0.0.0"
   }
 }

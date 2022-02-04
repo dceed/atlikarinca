@@ -1,13 +1,23 @@
-#loadelayed-spinner {
+:root {
+  --loadelayed-loader-spinner-width: 3rem;
+  --loadelayed-loader-spinner-height: 3rem;
+  --loadelayed-loader-spinner-border-width: 0.5rem;
+  --loadelayed-loader-spinner-border-color: blueviolet;
+}
+
+[data-loadelayed-loader-spinner] {
   margin: 0;
   padding: 0;
   display: inline-block;
   box-sizing: border-box;
-  border-color: blueviolet;
+  border-color: var(--loadelayed-loader-spinner-border-color);
+  border-bottom-color: transparent;
   border-style: solid;
   border-radius: 9999px;
   animation: spin 1s linear infinite;
-  border-bottom-color: transparent;
+  width: var(--loadelayed-loader-spinner-width);
+  height: var(--loadelayed-loader-spinner-height);
+  border-width: var(--loadelayed-loader-spinner-border-width);
 
   @keyframes spin {
     to {
@@ -15,7 +25,7 @@
     }
   }
 
-  &[data-loadelayed-spinner-size="3xs"] {
+  /* &[data-loadelayed-spinner-size="3xs"] {
     width: 1rem;
     height: 1rem;
     border-width: 0.25rem;
@@ -44,5 +54,5 @@
     width: 3rem;
     height: 3rem;
     border-width: 0.5rem;
-  }
+  } */
 }

@@ -7,7 +7,7 @@ export default defineConfig({
       entry: path.resolve("./lib/index.ts"),
       name: "loadelayed",
       formats: ["cjs", "es"],
-      fileName: (format) => `[name].${format}.js`,
+      fileName: (format) => `[name].${format}.min.js`,
     },
     cssCodeSplit: true,
     rollupOptions: {
@@ -16,6 +16,9 @@ export default defineConfig({
         "css/spinner": path.resolve(__dirname, "./assets/spinner.pcss"),
         loadelayed: path.resolve(__dirname, "./lib/index.ts"),
       },
+      output: {
+        exports: "named",
+      }
     },
   },
   resolve: {

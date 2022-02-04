@@ -1,179 +1,206 @@
-import "@/assets/style.pcss";
-import "@/assets/spinner.pcss";
+import { logger, Unit } from "@loadelayed/utils";
 
-import { logger } from "@loadelayed/utils";
+export type LoadelayedOptionSpinnerPosition =
+  | "top"
+  | "bottom"
+  | "left"
+  | "right"
+  | "center"
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
 
-export interface ShowLoaderOptions {
+export type LoadelayedOptionSpinnerSize = "3xs" | "2xs" | "xs" | "sm" | "base";
+
+export interface LoadelayedSpinnerOptions<
+  S = LoadelayedOptionSpinnerSize,
+  P = LoadelayedOptionSpinnerPosition
+> {
+  getSpinnerSize?: (
+    width: number,
+    height: number
+  ) => { size: S; spinnerWidth: Unit; spinnerHeight: Unit; borderWidth: Unit };
+  position?: P;
+}
+
+export interface LoadelayedShowLoaderOptions {
+  /**
+   * default: `false`
+   */
   full: boolean;
-  hideContent: boolean;
-  spinnerPosition:
-    | "top"
-    | "bottom"
-    | "left"
-    | "right"
-    | "center"
-    | "top-left"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-right";
+  spinner: LoadelayedSpinnerOptions;
 }
 
-export interface HideLoaderOptions {
-  removeLoadingData: boolean;
-  removeDatasets: boolean;
-}
+export class Loadelayed<E extends HTMLElement> {
+  element: E;
 
-const loadelayed = {
+  static defaultOptions: { show: Partial<LoadelayedShowLoaderOptions> } = {
+    show: {
+      full: false,
+      spinner: {
+        position: "center",
+        getSpinnerSize: (width, height) => {
+          if (height <= 20 || width <= 20) {
+            return {
+              size: "3xs",
+              spinnerWidth: "1rem",
+              spinnerHeight: "1rem",
+              borderWidth: "0.2rem",
+            };
+          } else if (height <= 30 || width <= 30) {
+            return {
+              size: "2xs",
+              spinnerWidth: "1.5rem",
+              spinnerHeight: "1.5rem",
+              borderWidth: "0.375rem",
+            };
+          } else if (height <= 40 || width <= 40) {
+            return {
+              size: "xs",
+              spinnerWidth: "2rem",
+              spinnerHeight: "2rem",
+              borderWidth: "0.5rem",
+            };
+          } else if (height <= 50 || width <= 50) {
+            return {
+              size: "sm",
+              spinnerWidth: "2.5rem",
+              spinnerHeight: "2.5rem",
+              borderWidth: "0.5rem",
+            };
+          } else {
+            return {
+              size: "base",
+              spinnerWidth: "3rem",
+              spinnerHeight: "3rem",
+              borderWidth: "0.5rem",
+            };
+          }
+        },
+      },
+    },
+  };
+
+  constructor(element: E | null) {
+    if (!element || !document.body.contains(element)) {
+      throw new Error(
+        "The element is not in the DOM. Please provide a valid element."
+      );
+    }
+    this.element = element;
+  }
+
+  static setDefaultShowOptions(options: Partial<LoadelayedShowLoaderOptions>) {
+    this.defaultOptions.show = options;
+  }
+
   /**
    * Show loader
    */
   show(
-    el: HTMLElement = document.body,
-    options: Partial<ShowLoaderOptions> = {
-      full: false,
-      spinnerPosition: "center",
-      hideContent: true,
-    }
+    options: Partial<LoadelayedShowLoaderOptions> = Loadelayed.defaultOptions
+      .show
   ) {
-    // TODO: el null check
-    let { width, height } = el.getBoundingClientRect();
-    width = Math.round(width);
-    height = Math.round(height);
-    logger.debug("loadelayed/open", `w: ${width}px, h: ${height}px.`);
-
-    el.setAttribute("id", "loadelayed");
-    el.style.setProperty("--loadelayed-container-width", ` ${width}px`);
-    el.style.setProperty("--loadelayed-container-height", ` ${height}px`);
-
-    el.dataset.loadelayedSpinnerPosition = options?.spinnerPosition ?? "center";
-    logger.debug(
-      "loadelayed/open",
-      `spinner position: ${options?.spinnerPosition ?? "center"}`
-    );
-    el.dataset.loadelayedLoading = "true";
-
-    el.dataset.loadelayedHideContent =
-      (options?.hideContent ? "true" : "") ?? "true";
-    logger.debug(
-      "loadelayed/open",
-      `is content hide? ${options?.hideContent ?? false}`
-    );
+    this.hide();
+    logger.debug("loadelayed/show", options);
 
     /**
      * This looks like this:
-     * @example
      * ```html
-     * <span id="loadelayed-spinner base"></span>
+     * <div data-loadelayed-loader>
+     *    <span class="loadelayed-spinner"></span>
+     * </div>
+     * ```
+     */
+    const container = document.createElement("div");
+
+    let { width, height } = this.element.getBoundingClientRect();
+    width = Math.round(width);
+    height = Math.round(height);
+
+    container.dataset.loadelayedLoader = "";
+    container.dataset.loadelayedLoaderSpinnerPosition =
+      options?.spinner?.position ?? "center";
+    container.style.setProperty("--loadelayed-loader-width", ` ${width}px`);
+    container.style.setProperty("--loadelayed-loader-height", ` ${height}px`);
+
+    if (options?.full ?? false) {
+      container.dataset.loadelayedLoaderFullscreen = "";
+      container.style.setProperty("--loadelayed-loader-width", ` 100vw`);
+      container.style.setProperty("--loadelayed-loader-height", ` 100vh`);
+    }
+
+    /**
+     * This looks like this:
+     * ```html
+     * <span data-loadelayed-loader-spinner data-loadelayed-loader-spinner-size="base"></span>
      * ```
      */
     const spinner = document.createElement("span");
-    spinner.setAttribute("id", "loadelayed-spinner");
+    spinner.dataset.loadelayedLoaderSpinner = "";
 
-    if (height <= 20 || width <= 20) {
-      spinner.dataset.loadelayedSpinnerSize = "3xs";
-    } else if (height <= 30 || width <= 30) {
-      spinner.dataset.loadelayedSpinnerSize = "2xs";
-    } else if (height <= 40 || width <= 40) {
-      spinner.dataset.loadelayedSpinnerSize = "xs";
-    } else if (height <= 50 || width <= 50) {
-      spinner.dataset.loadelayedSpinnerSize = "sm";
-    } else {
-      spinner.dataset.loadelayedSpinnerSize = "base";
+    const spinnerSize = options?.spinner?.getSpinnerSize?.(width, height);
+    if (spinnerSize) {
+      spinner.style.setProperty(
+        "--loadelayed-loader-spinner-width",
+        ` ${spinnerSize.spinnerWidth}`
+      );
+      spinner.style.setProperty(
+        "--loadelayed-loader-spinner-height",
+        ` ${spinnerSize.spinnerHeight}`
+      );
+      spinner.style.setProperty(
+        "--loadelayed-loader-spinner-border-width",
+        ` ${spinnerSize.borderWidth}`
+      );
     }
-    logger.debug(
-      "loadelayed/open",
-      `spinner size: ${spinner.dataset.loadelayedSpinnerSize}`
-    );
 
-    el.appendChild(spinner);
-
-    if (options?.full ?? false) el.classList.add("loadelayed-full");
-    logger.debug("loadelayed/open", `is full? ${options?.full ?? false}`);
-  },
+    container.appendChild(spinner);
+    this.element.appendChild(container);
+  }
 
   /**
    * Hide loader
    */
-  hide(
-    el: HTMLElement = document.body,
-    options: HideLoaderOptions = {
-      removeLoadingData: false,
-      removeDatasets: false,
+  hide() {
+    if (document.body.dataset.loadelayedLoaderFullscreen) {
+      document.body.removeAttribute("data-loadelayed-loader-fullscreen");
     }
-  ) {
-    // TODO: el null check
 
-    // Remove loading dataset. Optionally remove dataset attribute.
-    el.dataset.loadelayedLoading = "false";
-    if (options?.removeLoadingData ?? false)
-      el.removeAttribute("data-loadelayed-loading");
-
-    // Remove loader datasets. Optionally remove dataset attribute.
-    Object.entries(el.dataset).map(([key, value]) => {
-      if (key.startsWith("loadelayed") && !!value) {
-        if (options?.removeDatasets ?? false) {
-          delete el.dataset[key];
-        } else {
-          el.dataset[key] = "";
-        }
-      }
-    });
-
-    // Remove loader's id attribute
-    el.removeAttribute("id");
-
-    // Remove css variables
-    el.style.removeProperty("--loadelayed-container-width");
-    el.style.removeProperty("--loadelayed-container-height");
-
-    // Remove spinner from container.
-    const spinner = el.querySelector("#loadelayed-spinner");
-    if (!!spinner) el.removeChild(spinner);
-
-    // Remove loader classes
-    Array.from(el.classList).map((className) => {
-      if (className.startsWith("loadelayed-")) {
-        el.classList.remove(className);
-      }
-    });
-  },
+    const loader = this.element.querySelector("[data-loadelayed-loader]");
+    if (loader) {
+      this.element.removeChild(loader);
+      logger.debug("loadelayed/hide", "Loader removed.");
+    }
+  }
 
   /**
    * Show and hide loader via async functions.
    * @throws if the {@link callback} is rejected together with the reason, the reason is thrown as an {@link Error error}.
    */
   asyncShow(
-    el: HTMLElement = document.body,
     callback: () => Promise<any>,
-    options: { show: ShowLoaderOptions; hide: HideLoaderOptions } = {
-      show: {
-        full: false,
-        hideContent: true,
-        spinnerPosition: "center",
-      },
-      hide: {
-        removeDatasets: false,
-        removeLoadingData: false,
-      },
+    options: Partial<{ show: Partial<LoadelayedShowLoaderOptions> }> = {
+      show: Loadelayed.defaultOptions.show,
     }
   ): void {
-    this.show(el, options.show);
+    this.show(options.show);
 
     callback()
       .then(() => {
-        this.hide(el, options.hide);
+        this.hide();
       })
       .catch((reason) => {
         throw new Error(reason);
       });
-  },
-};
-
-declare global {
-  interface Window {
-    loadelayed: typeof loadelayed;
   }
 }
 
-window.loadelayed = loadelayed;
-export default loadelayed;
+declare global {
+  interface Window {
+    loadelayed: typeof Loadelayed;
+  }
+}
+
+export default Loadelayed;

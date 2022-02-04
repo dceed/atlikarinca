@@ -1,9 +1,8 @@
-#loadelayed {
-  width: var(--loadelayed-container-width);
-  height: var(--loadelayed-container-height);
+[data-loadelayed-loader] {
+  width: var(--loadelayed-loader-width);
+  height: var(--loadelayed-loader-height);
   display: flex;
 
-  /* ============ Loader position CSS starts here. ============ */
   &[data-loadelayed-spinner-position="top-left"] {
     justify-content: flex-start;
     align-items: flex-start;
@@ -43,18 +42,8 @@
     justify-content: flex-end;
     align-items: flex-end;
   }
-  /* ============ Loader position CSS ends here. ============ */
 
-  /**
-   * When the loader's child elements have `loader-container` class or
-   * `data-loadelayed-keep` attributes it's hidden.
-   */
-  &[data-loadelayed-hide-content][data-loadelayed-loading="true"]
-    :not(:where([data-loadelayed-keep], [id^="loader"], [class^="loader"])) {
-    display: none;
-  }
-
-  &.loader-full {
+  &[data-loadelayed-loader-fullscreen] {
     width: 100vw;
     height: 100vh;
     background-color: rgba(33, 33, 33, 0.95);
@@ -66,5 +55,14 @@
     z-index: 99999;
     user-select: none;
     pointer-events: none;
+  }
+
+  /**
+   * When the loader's child elements have `loader-container` class or
+   * `data-loadelayed-keep` attributes it's hidden.
+   */
+  &[data-loadelayed-hide-content][data-loadelayed-loading="true"]
+    :not(:where([data-loadelayed-keep], [id^="loader"], [class^="loader"])) {
+    display: none;
   }
 }
